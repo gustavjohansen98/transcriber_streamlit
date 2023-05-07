@@ -1,4 +1,5 @@
 import streamlit as st
+import upload as server
 
 def generate_upload_tab():
     with st.form("upload_form"):
@@ -7,8 +8,11 @@ def generate_upload_tab():
             key="uploaded_file",
             accept_multiple_files=False, 
             help="""
-            `Format` Vi understøtter alle lydformater!
-            `Sikkerhed` Din fil bliver enkrypteret når den sendes til vores server. Filen bliver slettet, så snart transskriberingen er færdig.
+            `Format` 
+            Vi understøtter alle lydformater!
+
+            `Sikkerhed` 
+            Din fil bliver enkrypteret når den sendes til vores server. Filen bliver slettet, så snart transskriberingen er færdig.
             """,
         )
         user_email = st.text_input(
@@ -17,23 +21,31 @@ def generate_upload_tab():
             value="", 
             placeholder="name@example.com", 
             help="""
-            `Hvorfor` Vi sender dig en mail med et link til transkriberingen, når den er klar.
-            `Sikkerhed` Vi gemmer din email i 7 dage, så du kan tilgå din transskribering. Efter 7 dage sletter vi din email.
-            `Marketing` Ingen spam og marketing fra os.
+            `Hvorfor` 
+            Vi sender dig en mail med et link til transkriberingen, når den er klar.
+
+            `Sikkerhed` 
+            Vi gemmer din email i 7 dage, så du kan tilgå din transskribering. Efter 7 dage sletter vi din email.
+
+            `Marketing` 
+            Ingen spam og marketing fra os.
             """,
         )
-        apply_diarization = st.radio(
-            label="🧮 **Del op efter hvem der snakker hvornår**",
-            key="apply_diarization",
-            options=[
-                "Ja",
-                "Nej, der er kun een speaker"
-            ],
-            index=0,
-            horizontal=True,
-            help="""
-            `Hvad` Din transskribering deles op efter, hvor mange forskellige personer der taler, så du nemt kan se, hvem der snakker hvornår.
-            `Sikkerhed` Vi kan ikke sætte navne på personerne, hvorfor de tildeles labels som *SPEAKER_00*, *SPEAKER_01*, etc. Du kan i vores redigeringsværktøj rette labels til, så de passer med virkeligheden.
-            """,
-        )
+        # apply_diarization = st.radio(
+        #     label="🧮 **Del op efter hvem der snakker hvornår**",
+        #     key="apply_diarization",
+        #     options=[
+        #         "Ja",
+        #         "Nej, der er kun een speaker"
+        #     ],
+        #     index=0,
+        #     horizontal=True,
+        #     help="""
+        #     `Hvad` Din transskribering deles op efter, hvor mange forskellige personer der taler, så du nemt kan se, hvem der snakker hvornår.
+        #     `Sikkerhed` Vi kan ikke sætte navne på personerne, hvorfor de tildeles labels som *SPEAKER_00*, *SPEAKER_01*, etc. Du kan i vores redigeringsværktøj rette labels til, så de passer med virkeligheden.
+        #     """,
+        # )
         upload_form_submitted = st.form_submit_button("Start transskribering", use_container_width=True, type="primary")
+        
+        if upload_form_submitted:
+            server.spawn_pipeline(email=user_email)

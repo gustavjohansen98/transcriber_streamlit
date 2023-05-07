@@ -35,23 +35,6 @@ header[data-testid="stHeader"] {
 </style>
 """, unsafe_allow_html=True)
 
-# remove header, sidebar, burgerbar, streamlit footer, and padding in mainComponent
-# st.markdown("""
-# <style>
-# /*
-# #MainMenu {visibility: hidden;}
-# footer {visibility: hidden;} 
-# header[data-testid="stHeader"] {
-#   visibility: hidden;
-# }
-# */
-# .block-container.css-1y4p8pa {
-#   padding: 2rem; 2rem; 2rem; 2rem;
-#   /* padding: 4rem; 0rem; 2rem; 0rem; */
-# }
-# </style>
-# """, unsafe_allow_html=True)
-# utils.hide_footer()
     
 st.title('AI transskribering `BETA`')
 
