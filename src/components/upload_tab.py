@@ -1,5 +1,6 @@
-import server_api
+import api.server_api as server_api
 import streamlit as st
+
 
 def generate_upload_tab():
     with st.form("upload_form"):
@@ -34,22 +35,42 @@ def generate_upload_tab():
             Ingen spam og marketing fra os.
             """,
         )
+
+        accepted_terms = st.checkbox(
+            label='Jeg har læst og accepteret [betingelser](/terms)',
+            key="accept_terms",
+            value=False,
+        )
             
-        upload_form_submitted = st.form_submit_button("Start transskribering", use_container_width=True, type="primary")
+        upload_form_submitted = st.form_submit_button(
+            label="Start transskribering",
+            use_container_width=True,
+            type="primary",
+        )
 
         if upload_form_submitted:
+            if uploaded_file is None and len(user_email) == 0:
+                st.warning("Udfyld felterne og accepter betingelser for at gå videre")
+                return
+
+            if not accepted_terms:
+                st.error("Accepter betingelser for at gå videre")
+                return
+
             try:
                 with st.spinner("Tjekker fil ..."):
                     success = server_api.spawn_pipeline(
                         email=user_email,
                         file=uploaded_file,
                     )
+
                 if success:
                     st.success(
-                        f"Yay! Vi sender resultatet til **{user_email}** inden længe (husk evt. at tjekke spam)",
+                        f"Yay! Vi sender din transskribering til **{user_email}** inden længe (husk evt. at tjekke din spam mappe)",
                         icon="🥳"
                     )
                     st.balloons()
+
             except server_api.InvalidEmailError as e:
                 st.error(str(e))
             except server_api.InvalidFileError as e:

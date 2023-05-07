@@ -1,8 +1,7 @@
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 from streamlit.logger import get_logger
+from utils import utils
 from modal import Function
-
-import utils
 
 
 class InvalidEmailError(Exception):
@@ -33,7 +32,7 @@ def spawn_pipeline(
     if not utils.validate_email(email):
         raise InvalidEmailError()
 
-    log_file  = " ".join([
+    log_file = " ".join([
         f"[UPLOAD]",
         f"(TYPE: {file.type})",
         f"(NAME: {file.name.split('.')[-1]})",
@@ -59,4 +58,5 @@ def spawn_pipeline(
 
     except Exception as e:
         logger.exception(e)
-        raise ServerError("Ups, der gik noget galt hos os ... Prøv igen")
+        raise ServerError("Ups, der gik noget galt hos os - prøv igen om et øjeblik")
+

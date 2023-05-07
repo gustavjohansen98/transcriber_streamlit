@@ -41,7 +41,7 @@ displayEnabled = true
 # Controls whether uncaught app exceptions are displayed in the browser. By default, this is set to True and Streamlit displays app exceptions and associated tracebacks in the browser.
 # If set to False, an exception will result in a generic message being shown in the browser, and exceptions and tracebacks will be printed to the console only.
 # Default: true
-showErrorDetails = true
+showErrorDetails = false
 
 # Change the visibility of items in the toolbar, options menu, and settings dialog (top right of the app).
 # Allowed values:
@@ -57,7 +57,7 @@ toolbarMode = "auto"
 
 # Allows you to type a variable or string by itself in a single line of Python code to write it to the app.
 # Default: true
-magicEnabled = true
+magicEnabled = false
 
 # Install a Python tracer to allow you to stop or pause your script at any point and introspect it. As a side-effect, this slows down your script's execution.
 # Default: false
@@ -208,4 +208,4 @@ base = "light"
 
 [ui]
 hideTopBar = true
-hideSidebarNav = false
+hideSidebarNav = true

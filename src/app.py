@@ -3,46 +3,22 @@ from components import (
     guide_tab as guide,
     faq_tab as faq,
     about_tab as about,
-    terms_tab as terms
+    terms_tab as terms,
+    custom_styles as styles,
 )
-
 import streamlit as st
-import utils     as utils
 
 
 def main():
     st.set_page_config(
         page_title="Transcribe | BETA",
         page_icon="🎙️",
+        layout="centered",
         initial_sidebar_state="collapsed",
-        layout="centered"
     )
-
-    st.markdown("""
-    <style>
-    #MainMenu {
-    visibility: hidden;
-    }
-    footer {
-    visibility: hidden;
-    }
-    
-    header[data-testid="stHeader"] {
-    visibility: hidden;
-    }
-    
-    .block-container {
-    padding-top: 2rem;
-    padding-right: 1rem;
-    padding-bottom: 2rem;
-    padding-left: 1rem;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
+    styles.remove_all_top_level_styles()
     
     st.title('AI transskribering `BETA`')
-
     st.markdown("""
     > 🫶 **Gratis** </br>
     > 🔒 **GDPR sikret** </br>
