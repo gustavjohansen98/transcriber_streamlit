@@ -1,3 +1,4 @@
+from utils import utils
 from components import (
     upload_tab as upload,
     guide_tab as guide,
@@ -49,5 +50,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # app_logger = logging.getLogger("app_logger")
     main()

@@ -1,4 +1,38 @@
 import re
+import json
+import uuid
+
+from streamlit_javascript import st_javascript
+from streamlit.web.server.server import Server
+from streamlit.runtime.runtime import Runtime
+from streamlit.runtime.session_manager import SessionInfo, ActiveSessionInfo
+from streamlit.runtime.scriptrunner.script_run_context import get_script_run_ctx
+    
+
+def init_session():
+    city, continent = get_city_continent()
+    _ctx = get_script_run_ctx()
+    _session_dict = _ctx.__dict__
+    print(_session_dict)
+    print(city)
+    print(continent)
+    return city, continent, _session_dict
+
+def get_session():
+    _ctx = get_script_run_ctx()
+    if _ctx is None:
+        return None
+ 
+    _session_dict = _ctx.__dict__
+    print(_session_dict)   
+    _id = _ctx.session_id
+    _city, _continent = get_city_continent()
+    
+    return {
+        "_id": _id,
+        "_city": _city,
+        "_continent": _continent
+    }
 
 
 def validate_email(email):
@@ -22,7 +56,15 @@ def format_seconds_to_str(seconds: float):
 
 
 def get_city_continent() -> tuple:
-    # timezone = get_user_timezone()
-    timezone = "Europe/Copenhagen"
+    default_tz = "Etc/UTC"
+    # js_key = uuid.uuid4()
+    timezone = st_javascript("""await (async () => {
+            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+            console.log(userTimezone)
+            return userTimezone
+        })().then(returnValue => returnValue)""")
+    if timezone == 0:  # st_javascript returns 0 for null/undefined
+        timezone = default_tz
+
     continent, city = timezone.split("/")
     return city, continent

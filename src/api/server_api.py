@@ -32,11 +32,13 @@ def spawn_pipeline(
     if not utils.validate_email(email):
         raise InvalidEmailError()
 
+    session_info = utils.get_session()        
     log_file = " ".join([
         f"[UPLOAD]",
         f"(TYPE: {file.type})",
         f"(NAME: {file.name.split('.')[-1]})",
         f"(SIZE: {file.size})",
+        f"(SESSION: {session_info})",
     ])
     logger.info(log_file)
 
