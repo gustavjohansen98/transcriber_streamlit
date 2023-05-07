@@ -28,7 +28,7 @@ def generate_upload_tab():
             Vi sender dig en mail med et link til transskriberingen, når den er klar.
 
             `Sikkerhed` 
-            Vi gemmer din email i 7 dage, så du kan tilgå din transskribering. Efter 7 dage sletter vi din email.
+            Din email bliver slettet, så snart vi har sendt resultatet til dig.
 
             `Marketing` 
             Ingen spam og marketing fra os.
