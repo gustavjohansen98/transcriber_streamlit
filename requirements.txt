@@ -1,0 +1,5 @@
+modal-client==0.49.2007
+ffmpeg-python==0.2.0
+streamlit==1.22.0
+streamlit-javascript==0.1.5
+streamlit-extras==0.2.7
