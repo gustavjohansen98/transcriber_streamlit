@@ -7,16 +7,17 @@ def generate_upload_tab():
         uploaded_file = st.file_uploader(
             label="💾 **Upload din fil**", 
             key="uploaded_file",
-            accept_multiple_files=False, 
+            accept_multiple_files=False,
+            type=['mp3', 'mp4', 'wav', 'm4a', 'flac', 'acc', 'wma'],
             help="""
             `Format` 
-            Vi understøtter alle lydformater!
+            Vi understøtter pt. *mp3*, *mp4*, *wav*, *m4a*, *flac*, *acc*, *wma*.
 
             `Sikkerhed` 
             Din fil bliver enkrypteret, når den sendes til vores server. Filen bliver slettet, så snart transskriberingen er færdig.
             """,
         )
-
+        
         user_email = st.text_input(
             label="📧 **Indtast din emailadresse**", 
             key="user_email",
@@ -52,5 +53,7 @@ def generate_upload_tab():
             except server_api.InvalidEmailError as e:
                 st.error(str(e))
             except server_api.InvalidFileError as e:
+                st.error(str(e))
+            except server_api.ServerError as e:
                 st.error(str(e))
                 
