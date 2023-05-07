@@ -1,3 +1,4 @@
+import re
 import streamlit as st
 from markdownlit import mdlit
 
@@ -34,6 +35,16 @@ __remove_main_padding = """
 __small_divider = """
 <hr style="margin-top: 0px; margin-bottom: 5px;" /> 
 """
+
+def validate_email(email):
+    """
+    Takes a string and uses regex to validate that it is an email address.
+    Returns True if the email address is valid, False otherwise.
+    """
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'    
+    match = re.match(pattern, email)
+    return bool(match)
+
 
 def format_seconds_to_str(seconds: float):
     milliseconds = int(seconds*1000)

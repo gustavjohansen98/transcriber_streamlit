@@ -23,9 +23,11 @@ st.markdown("""
 footer {
   visibility: hidden;
 }
+*/
 header[data-testid="stHeader"] {
   visibility: hidden;
 }
+*/
 .block-container {
   padding-top: 2rem;
   padding-right: 1rem;
