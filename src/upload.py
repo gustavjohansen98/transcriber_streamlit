@@ -1,6 +1,6 @@
 from modal import Function
 
-pipeline = Function.lookup("streamlit_test")
+pipeline = Function.lookup("client-test", "streamlit_test")
 
 def spawn_pipeline(
     email: str, 
