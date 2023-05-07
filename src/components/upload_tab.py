@@ -46,7 +46,7 @@ def generate_upload_tab():
                     )
                 if success:
                     st.success(
-                        f"Yay! Vi sender resultatet til **{user_email}** inden længe.",
+                        f"Yay! Vi sender resultatet til **{user_email}** inden længe (husk evt. at tjekke spam)",
                         icon="🥳"
                     )
                     st.balloons()
