@@ -22,7 +22,7 @@ def generate_upload_tab():
             label="📧 **Indtast din emailadresse**", 
             key="user_email",
             value="", 
-            placeholder="name@example.com", 
+            placeholder="hello@world.com", 
             help="""
             `Hvorfor` 
             Vi sender dig en mail med et link til transskriberingen, når den er klar.
