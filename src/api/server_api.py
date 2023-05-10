@@ -24,23 +24,11 @@ def spawn_pipeline(
     email: str, 
     file: UploadedFile = None, 
 ):
-    logger = get_logger(__name__)
-
     if file is None:
         raise InvalidFileError("Vælg en fil")
     
     if not utils.validate_email(email):
         raise InvalidEmailError()
-
-    session_info = utils.get_session()        
-    log_file = " ".join([
-        f"[UPLOAD]",
-        f"(TYPE: {file.type})",
-        f"(NAME: {file.name.split('.')[-1]})",
-        f"(SIZE: {file.size})",
-        f"(SESSION: {session_info})",
-    ])
-    logger.info(log_file)
 
     try:    
         pipeline    = Function.lookup(
@@ -48,17 +36,28 @@ def spawn_pipeline(
             "start_transcribing",
         )
         audio_bytes = file.read()
-        job         = pipeline.spawn(
+        modal_job   = pipeline.spawn(
             user_id=email,
-            transcription_id="",
+            transcription_id=utils.get_session_id(),
             storage_url="file",
             audio_bytes=audio_bytes,
         )
-
-        logger.info(f"[PIPELINE] (JOB_ID: {job.object_id})")
         return True
 
     except Exception as e:
         logger.exception(e)
         raise ServerError("Ups, der gik noget galt hos os - prøv igen om et øjeblik")
+
+    finally:
+        session_info = utils.get_session()        
+        log_file = " ".join([
+            f"[UPLOAD]",
+            f"(TYPE: {file.type})",
+            f"(NAME: {file.name.split('.')[-1]})",
+            f"(SIZE: {file.size})",
+            f"(SESSION: {session_info})",
+            f"(JOB_ID: {modal_job.object_id})",
+        ])
+        logger = get_logger(__name__)
+        logger.info(log_file)
 

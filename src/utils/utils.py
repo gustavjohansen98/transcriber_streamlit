@@ -3,13 +3,14 @@ import json
 import uuid
 
 from streamlit_javascript import st_javascript
+from streamlit import runtime
 from streamlit.web.server.server import Server
 from streamlit.runtime.runtime import Runtime
 from streamlit.runtime.session_manager import SessionInfo, ActiveSessionInfo
 from streamlit.runtime.scriptrunner.script_run_context import get_script_run_ctx
     
 
-def init_session():
+def init_session() -> tuple:
     city, continent = get_city_continent()
     _ctx = get_script_run_ctx()
     _session_dict = _ctx.__dict__
@@ -18,7 +19,7 @@ def init_session():
     print(continent)
     return city, continent, _session_dict
 
-def get_session():
+def get_session() -> dict[str, str]:
     _ctx = get_script_run_ctx()
     if _ctx is None:
         return None
@@ -27,15 +28,34 @@ def get_session():
     print(_session_dict)   
     _id = _ctx.session_id
     _city, _continent = get_city_continent()
-    
+    _remote_ip = get_remote_ip()
+
     return {
         "_id": _id,
+        "_ip": _remote_ip,
         "_city": _city,
         "_continent": _continent
     }
 
+def get_session_id() -> str:
+    _ctx = get_script_run_ctx()
+    if _ctx is None: return None
+    return _ctx.session_id
 
-def validate_email(email):
+
+def get_remote_ip() -> str:
+    try:
+        _ctx = get_script_run_ctx()
+        if _ctx is None: return None
+        session_info = runtime.get_instance().get_client(_ctx.session_id)
+        if session_info is None: return None
+    except Exception as e:
+        return None
+    
+    return session_info.request.remote_ip
+
+
+def validate_email(email) -> bool:
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'    
     match = re.match(pattern, email)
     return bool(match)
