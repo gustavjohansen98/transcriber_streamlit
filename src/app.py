@@ -1,4 +1,4 @@
-from utils import utils
+import streamlit as st
 from components import (
     upload_tab as upload,
     guide_tab as guide,
@@ -7,7 +7,6 @@ from components import (
     terms_tab as terms,
     custom_styles as styles,
 )
-import streamlit as st
 
 
 def main():
