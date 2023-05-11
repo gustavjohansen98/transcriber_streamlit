@@ -1,9 +1,11 @@
 import api.server_api as server_api
 import streamlit as st
+import time
 
 
 def generate_upload_tab():
-    with st.form("upload_form"):
+    placeholder = st.empty()
+    with placeholder.form("upload_form"):
 
         uploaded_file = st.file_uploader(
             label="💾 **Upload din fil**", 
@@ -65,11 +67,12 @@ def generate_upload_tab():
                     )
 
                 if success:
-                    st.success(
+                    st.balloons()
+                    time.sleep(2)
+                    placeholder.success(
                         f"Yay! Vi sender din transskribering til **{user_email}** inden længe (husk evt. at tjekke din spam mappe)",
                         icon="🥳"
                     )
-                    st.balloons()
 
             except server_api.InvalidEmailError as e:
                 st.error(str(e))
@@ -77,4 +80,3 @@ def generate_upload_tab():
                 st.error(str(e))
             except server_api.ServerError as e:
                 st.error(str(e))
-                

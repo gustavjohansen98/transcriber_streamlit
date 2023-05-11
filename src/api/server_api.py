@@ -1,5 +1,5 @@
+import time
 from streamlit.runtime.uploaded_file_manager import UploadedFile
-from streamlit.logger import get_logger
 from utils import utils
 from modal import Function
 
@@ -24,8 +24,6 @@ def spawn_pipeline(
     email: str, 
     file: UploadedFile = None, 
 ):
-    logger = get_logger(__name__)
-
     if file is None:
         raise InvalidFileError("Vælg en fil")
     
@@ -37,28 +35,33 @@ def spawn_pipeline(
             "transcriber-pipeline", 
             "start_transcribing",
         )
-        audio_bytes = file.read()
-        modal_job   = pipeline.spawn(
+
+        audio_bytes       = file.read()
+        user_session_id   = utils.get_session_id()
+        user_ip_address   = utils.get_remote_ip()
+        extension         = file.name.split('.')[-1]
+        size              = file.size
+        file_type         = file.type
+        upload_time       = time.time_ns()
+
+        modal_job = pipeline.spawn(
             user_id=email,
-            transcription_id=utils.get_session_id(),
+            transcription_id=user_session_id,
             storage_url="file",
             audio_bytes=audio_bytes,
+            client_info={
+                "user_session_id": user_session_id,
+                "user_ip_address": user_ip_address,
+                "extension": extension,
+                "size": size,
+                "file_type": file_type,
+                "upload_time": upload_time,
+            }
         )
-        session_id = utils.get_session_id()
-        remote_ip  = utils.get_remote_ip()        
-        log_file = " ".join([
-            f"[UPLOAD]",
-            f"(TYPE: {file.type})",
-            f"(NAME: {file.name.split('.')[-1]})",
-            f"(SIZE: {file.size})",
-            f"(SESSION: {session_id})",
-            f"(IP: {remote_ip})",
-            f"(JOB_ID: {modal_job.object_id})",
-        ])
-        logger.info(log_file)
+        print(modal_job.object_id)
         return True
 
     except Exception as e:
-        logger.exception(e)
+        print(str(e))
         raise ServerError("Ups, der gik noget galt hos os - prøv igen om et øjeblik")
 
