@@ -64,5 +64,5 @@ def spawn_pipeline(
 
     except Exception as e:
         print(str(e))
-        raise ServerError("Ups, der gik noget galt hos os - prøv igen om et øjeblik")
+        raise ServerError(f"Ups, der gik noget galt hos os - prøv igen om et øjeblik \n\n {e}")
 
