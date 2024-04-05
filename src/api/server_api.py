@@ -1,7 +1,8 @@
 import time
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 from utils import utils
-from modal import Function
+# from modal import Function
+import modal
 
 
 class InvalidEmailError(Exception):
@@ -31,7 +32,7 @@ def spawn_pipeline(
         raise InvalidEmailError()
 
     try:    
-        pipeline    = Function.lookup(
+        pipeline    = modal.Function.lookup(
             "transcriber-pipeline", 
             "start_transcribing",
         )
